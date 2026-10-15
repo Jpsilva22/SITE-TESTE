@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casas Bahia - Saldão de Ofertas | Até 30% OFF</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome para Ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cbBlue: '#003399',
+                        cbBlueDark: '#002288',
+                        cbYellow: '#ffcd00',
+                        cbYellowDark: '#e0b300',
+                        cbRed: '#e60014',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #003399;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans antialiased selection:bg-cbYellow selection:text-cbBlue">
+
+    <!-- Faixa Promocional Superior -->
+    <div class="bg-cbRed text-white text-xs font-bold py-1.5 px-4 text-center tracking-wide flex items-center justify-center gap-2 shadow-inner">
+        <i class="fa-solid fa-fire text-cbYellow animate-bounce"></i>
+        <span>SALDÃO DE OFERTAS CASAS BAHIA: 30% DE DESCONTO EM TODO O SITE + FRETE GRÁTIS EM SELECIONADOS!</span>
+        <i class="fa-solid fa-fire text-cbYellow animate-bounce"></i>
+    </div>
+
+    <!-- Barra Utilitária Superior (Desktop) -->
+    <div class="bg-gray-200 text-xs py-1.5 px-4 hidden md:block border-b border-gray-300">
+        <div class="max-w-7xl mx-auto flex justify-between items-center text-gray-600">
+            <div class="flex items-center space-x-6">
+                <span class="hover:text-cbBlue cursor-pointer transition" onclick="showToast('Localizador de lojas acionado.')"><i class="fa-solid fa-store mr-1 text-cbBlue"></i> Nossas Lojas</span>
+                <span class="hover:text-cbBlue cursor-pointer transition" onclick="showToast('Central de Atendimento: 0800 770 1212')"><i class="fa-solid fa-headset mr-1 text-cbBlue"></i> Central de Atendimento</span>
+                <span class="hover:text-cbBlue cursor-pointer transition" onclick="showToast('Sua lista de casamento está ativa!')"><i class="fa-solid fa-gift mr-1 text-cbBlue"></i> Lista de Casamento</span>
+                <span class="hover:text-cbBlue cursor-pointer transition" onclick="showToast('Peça o seu Cartão Casas Bahia com anuidade zero!')"><i class="fa-solid fa-credit-card mr-1 text-cbBlue"></i> Cartão Casas Bahia</span>
+            </div>
+            <div class="flex items-center space-x-6">
+                <span class="font-bold text-cbRed flex items-center gap-1 cursor-pointer" onclick="filterCategory('todos')"><i class="fa-solid fa-bolt"></i> Ofertas Imbatíveis</span>
+                <span class="hover:text-cbBlue cursor-pointer transition" onclick="showToast('Baixe o App Casas Bahia no Google Play ou App Store!')"><i class="fa-solid fa-mobile-screen mr-1 text-cbBlue"></i> Baixe o App</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cabecalho Principal -->
+    <header class="bg-cbBlue sticky top-0 z-40 shadow-xl border-b-4 border-cbYellow">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3 md:gap-4">
+            
+            <!-- Menu Mobile & Logo Casas Bahia -->
+            <div class="flex items-center space-x-2 md:space-x-3">
+                <button id="mobile-menu-btn" class="md:hidden text-white text-2xl focus:outline-none p-1 hover:text-cbYellow transition">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <a href="#" onclick="filterCategory('todos')" class="flex items-center group">
+                    <div class="bg-white px-2.5 py-1 md:px-3 md:py-1.5 rounded-lg shadow-md flex items-center gap-1.5 transform group-hover:scale-105 transition border-2 border-cbYellow">
+                        <div class="bg-cbRed text-white px-1.5 py-0.5 rounded font-black text-xs uppercase tracking-wider">CB</div>
+                        <span class="font-black text-xl md:text-2xl tracking-tighter italic text-cbBlue">casas<span class="text-cbRed">bahia</span></span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Seletor de CEP (Desktop) -->
+            <div onclick="simulateCepModal()" class="hidden lg:flex items-center text-white text-xs cursor-pointer hover:bg-cbBlueDark p-2 rounded-lg transition border border-blue-400/30">
+                <i class="fa-solid fa-location-dot text-cbYellow text-xl mr-2 animate-pulse"></i>
+                <div>
+                    <p class="text-blue-200 text-[10px] uppercase font-bold tracking-wider">Informe seu CEP</p>
+                    <p id="header-cep-label" class="font-bold text-sm">Teresina - PI (64000-000)</p>
+                </div>
+            </div>
+
+            <!-- Barra de Busca -->
+            <div class="flex-1 max-w-2xl relative">
+                <div class="flex shadow-lg rounded-xl overflow-hidden bg-white">
+                    <select id="search-category-select" onchange="handleCategorySelect(this.value)" class="bg-gray-100 text-gray-700 text-xs font-bold px-3 border-r focus:outline-none hidden sm:block">
+                        <option value="todos">Todas Categorias</option>
+                        <option value="Smartphones">Smartphones</option>
+                        <option value="TVs & Áudio">TVs & Áudio</option>
+                        <option value="Eletrodomésticos">Eletrodomésticos</option>
+                        <option value="Informática">Informática</option>
+                        <option value="Móveis">Móveis</option>
+                        <option value="Eletroportáteis">Eletroportáteis</option>
+                    </select>
+                    <div class="relative flex-1 flex items-center">
+                        <input type="text" id="search-input" placeholder="O que você procura hoje?" 
+                               class="w-full py-2 px-3 sm:py-2.5 sm:px-4 text-gray-900 focus:outline-none text-xs sm:text-sm font-medium pr-14">
+                        <div class="absolute right-2 flex items-center gap-2 text-gray-400 text-xs sm:text-sm">
+                            <i class="fa-solid fa-microphone cursor-pointer hover:text-cbBlue transition" onclick="showToast('Busca por voz ativada. Fale seu produto!')"></i>
+                        </div>
+                    </div>
+                    <button id="search-btn" class="bg-cbYellow hover:bg-cbYellowDark text-cbBlue font-black px-4 sm:px-5 transition flex items-center justify-center">
+                        <i class="fa-solid fa-magnifying-glass text-base sm:text-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Ações e Carrinho -->
+            <div class="flex items-center space-x-3 sm:space-x-5 text-white">
+                <div onclick="showToast('Área do Cliente: Faça Login ou Cadastre-se')" class="hidden md:flex items-center space-x-2 cursor-pointer hover:text-cbYellow transition">
+                    <i class="fa-regular fa-user text-2xl"></i>
+                    <div class="text-xs">
+                        <p class="text-blue-200">Olá, Visitante</p>
+                        <p class="font-bold">Entre ou Cadastre-se</p>
+                    </div>
+                </div>
+
+                <!-- Botão Carrinho -->
+                <button id="cart-btn" class="relative bg-cbYellow hover:bg-cbYellowDark text-cbBlue px-3 py-2 sm:px-4 sm:py-2 rounded-lg font-black flex items-center space-x-2 transition shadow-lg transform active:scale-95">
+                    <i class="fa-solid fa-cart-shopping text-lg sm:text-xl"></i>
+                    <span class="hidden sm:inline text-sm">Carrinho</span>
+                    <span id="cart-counter" class="absolute -top-2 -right-2 bg-cbRed text-white text-xs w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center font-black border-2 border-white shadow">0</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Barra de Departamentos -->
+        <nav class="bg-cbBlueDark text-white text-xs hidden md:block border-t border-blue-900">
+            <div class="max-w-7xl mx-auto px-4 flex items-center justify-between overflow-x-auto py-2 font-semibold custom-scrollbar">
+                <button onclick="filterCategory('todos')" class="hover:text-cbYellow font-bold whitespace-nowrap transition flex items-center gap-2 bg-blue-900/60 px-3 py-1 rounded-full border border-blue-700">
+                    <i class="fa-solid fa-bars text-cbYellow"></i> Todos os Departamentos
+                </button>
+                <button onclick="filterCategory('Smartphones')" class="hover:text-cbYellow whitespace-nowrap transition py-1">Celulares & Smartphones</button>
+                <button onclick="filterCategory('TVs & Áudio')" class="hover:text-cbYellow whitespace-nowrap transition py-1">TVs e Vídeo</button>
+                <button onclick="filterCategory('Eletrodomésticos')" class="hover:text-cbYellow whitespace-nowrap transition py-1">Eletrodomésticos</button>
+                <button onclick="filterCategory('Móveis')" class="hover:text-cbYellow whitespace-nowrap transition py-1">Móveis & Decoração</button>
+                <button onclick="filterCategory('Informática')" class="hover:text-cbYellow whitespace-nowrap transition py-1">Informática & Gamer</button>
+                <button onclick="filterCategory('Eletroportáteis')" class="hover:text-cbYellow whitespace-nowrap transition py-1">Eletroportáteis</button>
+                <button onclick="showToast('Cartão Casas Bahia: Peça já o seu sem anuidade!')" class="text-cbYellow hover:underline font-bold whitespace-nowrap transition py-1 flex items-center gap-1"><i class="fa-solid fa-credit-card"></i> Cartão Casas Bahia</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Menu Drawer Mobile -->
+    <div id="mobile-menu" class="fixed inset-0 bg-black/60 z-50 hidden transition-opacity backdrop-blur-sm">
+        <div class="bg-white w-80 h-full shadow-2xl p-5 flex flex-col justify-between overflow-y-auto">
+            <div>
+                <div class="flex justify-between items-center border-b pb-4 mb-4">
+                    <div class="bg-white border-2 border-cbYellow px-3 py-1 rounded-lg flex items-center gap-2">
+                        <div class="bg-cbRed text-white px-1.5 py-0.5 rounded font-black text-xs">CB</div>
+                        <span class="font-black text-lg italic text-cbBlue">casas<span class="text-cbRed">bahia</span></span>
+                    </div>
+                    <button id="close-mobile-menu" class="text-gray-500 hover:text-red-600 text-2xl font-bold"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Departamentos do Saldão</p>
+                <div class="space-y-2 font-semibold text-gray-700 text-sm">
+                    <button onclick="filterCategory('todos')" class="w-full text-left py-2 px-3 hover:bg-blue-50 rounded-lg hover:text-cbBlue transition flex items-center justify-between"><span class="flex items-center gap-2"><i class="fa-solid fa-list text-cbBlue"></i> Todas as Categorias</span> <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i></button>
+                    <button onclick="filterCategory('Smartphones')" class="w-full text-left py-2 px-3 hover:bg-blue-50 rounded-lg hover:text-cbBlue transition flex items-center justify-between"><span class="flex items-center gap-2"><i class="fa-solid fa-mobile-screen text-cbBlue"></i> Celulares e Smartphones</span> <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i></button>
+                    <button onclick="filterCategory('TVs & Áudio')" class="w-full text-left py-2 px-3 hover:bg-blue-50 rounded-lg hover:text-cbBlue transition flex items-center justify-between"><span class="flex items-center gap-2"><i class="fa-solid fa-tv text-cbBlue"></i> TVs e Vídeo</span> <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i></button>
+                    <button onclick="filterCategory('Eletrodomésticos')" class="w-full text-left py-2 px-3 hover:bg-blue-50 rounded-lg hover:text-cbBlue transition flex items-center justify-between"><span class="flex items-center gap-2"><i class="fa-solid fa-kitchen-set text-cbBlue"></i> Eletrodomésticos</span> <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i></button>
+                    <button onclick="filterCategory('Móveis')" class="w-full text-left py-2 px-3 hover:bg-blue-50 rounded-lg hover:text-cbBlue transition flex items-center justify-between"><span class="flex items-center gap-2"><i class="fa-solid fa-couch text-cbBlue"></i> Móveis e Decoração</span> <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i></button>
+                    <button onclick="filterCategory('Informática')" class="w-full text-left py-2 px-3 hover:bg-blue-50 rounded-lg hover:text-cbBlue transition flex items-center justify-between"><span class="flex items-center gap-2"><i class="fa-solid fa-laptop text-cbBlue"></i> Informática & Gamer</span> <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i></button>
+                    <button onclick="filterCategory('Eletroportáteis')" class="w-full text-left py-2 px-3 hover:bg-blue-50 rounded-lg hover:text-cbBlue transition flex items-center justify-between"><span class="flex items-center gap-2"><i class="fa-solid fa-mug-hot text-cbBlue"></i> Eletroportáteis</span> <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i></button>
+                </div>
+            </div>
+            <div class="text-xs text-gray-500 text-center border-t pt-4 space-y-1">
+                <p class="font-bold text-cbBlue">Saldão de Ofertas Casas Bahia</p>
+                <p class="text-[11px] text-gray-400">Todos os direitos reservados &copy; 2026</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <main class="max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-6 sm:space-y-8">
+
+        <!-- Banner Saldão Principal -->
+        <section class="relative bg-gradient-to-r from-cbBlue via-blue-800 to-cbBlueDark rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl text-white p-5 sm:p-10 border-2 border-blue-400/20">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8 z-10 relative">
+                <div class="max-w-xl space-y-3 sm:space-y-4 text-center md:text-left">
+                    <div class="inline-flex items-center gap-2 bg-cbRed text-white text-xs font-black uppercase px-3 py-1 sm:px-4 sm:py-1.5 rounded-full shadow-lg">
+                        <i class="fa-solid fa-bolt text-cbYellow animate-pulse"></i> Oportunidade Única de Saldão
+                    </div>
+                    <h1 class="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight">
+                        Saldão de Estoque <br><span class="text-cbYellow underline decoration-cbRed">Até 30% OFF</span> Em Tudo!
+                    </h1>
+                    <p class="text-gray-200 text-xs sm:text-base font-medium">
+                        Renove sua casa com preços acessíveis e imbatíveis em Smart TVs, Celulares, Eletrodomésticos e Móveis. Parcele em até 10x sem juros!
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-3 justify-center md:justify-start">
+                        <a href="#produtos-vitrine" class="bg-cbYellow hover:bg-cbYellowDark text-cbBlue font-black text-sm sm:text-base px-6 py-3 rounded-xl shadow-xl inline-flex items-center gap-2 transition transform hover:scale-105 active:scale-95">
+                            <i class="fa-solid fa-bag-shopping"></i> Aproveitar Ofertas
+                        </a>
+                        <div class="bg-white/10 backdrop-blur-md border border-white/20 px-3 py-2 sm:px-4 sm:py-3 rounded-xl flex items-center gap-2.5">
+                            <i class="fa-solid fa-qrcode text-cbYellow text-xl sm:text-2xl"></i>
+                            <div class="text-left text-xs">
+                                <span class="font-bold block text-white">Desconto extra no PIX</span>
+                                <span class="text-gray-300">Aprovação imediata</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 flex justify-center relative">
+                    <div class="relative max-w-md w-full">
+                        <img src="https://images.unsplash.com/photo-1526738549149-8e07eca6c147?auto=format&fit=crop&w=800&q=80" alt="Saldão Casas Bahia" class="rounded-xl sm:rounded-2xl shadow-2xl object-cover h-48 sm:h-64 md:h-80 w-full border-4 border-white/20">
+                        <div class="absolute -top-3 -right-3 sm:-top-4 sm:-right-4 bg-cbRed text-white font-black text-base sm:text-xl rounded-full w-16 h-16 sm:w-20 sm:h-20 flex flex-col items-center justify-center shadow-2xl border-4 border-white transform rotate-12">
+                            <span>30%</span>
+                            <span class="text-[9px] sm:text-[10px] uppercase font-bold tracking-tighter">OFF</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categorias Rápidas -->
+        <section>
+            <div class="flex items-center justify-between mb-3 sm:mb-4">
+                <h2 class="text-lg sm:text-xl font-extrabold text-gray-800 flex items-center gap-2">
+                    <i class="fa-solid fa-layer-group text-cbBlue"></i> Categorias em Destaque
+                </h2>
+                <span class="text-xs text-cbBlue font-bold hover:underline cursor-pointer" onclick="filterCategory('todos')">Ver todas</span>
+            </div>
+            <div class="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6 gap-2 sm:gap-3 text-center">
+                <div onclick="filterCategory('Smartphones')" class="bg-white p-2.5 sm:p-3.5 rounded-xl sm:rounded-2xl shadow-sm hover:shadow-md cursor-pointer transition border border-gray-200 group flex flex-col items-center">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-blue-50 rounded-xl flex items-center justify-center text-cbBlue text-lg sm:text-xl mb-1.5 group-hover:bg-cbBlue group-hover:text-white transition">
+                        <i class="fa-solid fa-mobile-screen-button"></i>
+                    </div>
+                    <span class="text-[11px] sm:text-xs font-bold text-gray-700 group-hover:text-cbBlue leading-tight">Smartphones</span>
+                </div>
+                <div onclick="filterCategory('TVs & Áudio')" class="bg-white p-2.5 sm:p-3.5 rounded-xl sm:rounded-2xl shadow-sm hover:shadow-md cursor-pointer transition border border-gray-200 group flex flex-col items-center">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-blue-50 rounded-xl flex items-center justify-center text-cbBlue text-lg sm:text-xl mb-1.5 group-hover:bg-cbBlue group-hover:text-white transition">
+                        <i class="fa-solid fa-tv"></i>
+                    </div>
+                    <span class="text-[11px] sm:text-xs font-bold text-gray-700 group-hover:text-cbBlue leading-tight">TVs & Áudio</span>
+                </div>
+                <div onclick="filterCategory('Eletrodomésticos')" class="bg-white p-2.5 sm:p-3.5 rounded-xl sm:rounded-2xl shadow-sm hover:shadow-md cursor-pointer transition border border-gray-200 group flex flex-col items-center">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-blue-50 rounded-xl flex items-center justify-center text-cbBlue text-lg sm:text-xl mb-1.5 group-hover:bg-cbBlue group-hover:text-white transition">
+                        <i class="fa-solid fa-kitchen-set"></i>
+                    </div>
+                    <span class="text-[11px] sm:text-xs font-bold text-gray-700 group-hover:text-cbBlue leading-tight">Eletrodomésticos</span>
+                </div>
+                <div onclick="filterCategory('Informática')" class="bg-white p-2.5 sm:p-3.5 rounded-xl sm:rounded-2xl shadow-sm hover:shadow-md cursor-pointer transition border border-gray-200 group flex flex-col items-center">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-blue-50 rounded-xl flex items-center justify-center text-cbBlue text-lg sm:text-xl mb-1.5 group-hover:bg-cbBlue group-hover:text-white transition">
+                        <i class="fa-solid fa-laptop"></i>
+                    </div>
+                    <span class="text-[11px] sm:text-xs font-bold text-gray-700 group-hover:text-cbBlue leading-tight">Informática</span>
+                </div>
+                <div onclick="filterCategory('Móveis')" class="bg-white p-2.5 sm:p-3.5 rounded-xl sm:rounded-2xl shadow-sm hover:shadow-md cursor-pointer transition border border-gray-200 group flex flex-col items-center">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-blue-50 rounded-xl flex items-center justify-center text-cbBlue text-lg sm:text-xl mb-1.5 group-hover:bg-cbBlue group-hover:text-white transition">
+                        <i class="fa-solid fa-couch"></i>
+                    </div>
+                    <span class="text-[11px] sm:text-xs font-bold text-gray-700 group-hover:text-cbBlue leading-tight">Móveis</span>
+                </div>
+                <div onclick="filterCategory('Eletroportáteis')" class="bg-white p-2.5 sm:p-3.5 rounded-xl sm:rounded-2xl shadow-sm hover:shadow-md cursor-pointer transition border border-gray-200 group flex flex-col items-center">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-blue-50 rounded-xl flex items-center justify-center text-cbBlue text-lg sm:text-xl mb-1.5 group-hover:bg-cbBlue group-hover:text-white transition">
+                        <i class="fa-solid fa-mug-hot"></i>
+                    </div>
+                    <span class="text-[11px] sm:text-xs font-bold text-gray-700 group-hover:text-cbBlue leading-tight">Eletroportáteis</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Vitrine de Produtos -->
+        <section id="produtos-vitrine">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-2 border-b pb-3 sm:pb-4">
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-black text-gray-900 flex items-center gap-2">
+                        <i class="fa-solid fa-tags text-cbRed"></i> Ofertas do Saldão (30% OFF)
+                    </h2>
+                    <p class="text-xs text-gray-500 font-medium">Preços acessíveis com desconto aplicado, ficha técnica e garantia nacional</p>
+                </div>
+                <div class="text-xs font-bold bg-blue-100 text-cbBlue px-3 py-1.5 rounded-full" id="result-count">
+                    Mostrando todos os produtos
+                </div>
+            </div>
+
+            <!-- Grade de Produtos -->
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                <!-- Injetado dinamicamente via JS -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal Ficha Técnica & Avaliações -->
+    <div id="spec-modal" class="fixed inset-0 bg-black/70 z-50 hidden items-center justify-center p-3 sm:p-4 backdrop-blur-sm">
+        <div class="bg-white w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div class="bg-cbBlue text-white px-5 py-3.5 sm:px-6 sm:py-4 flex justify-between items-center">
+                <h3 class="font-bold text-sm sm:text-lg flex items-center gap-2">
+                    <i class="fa-solid fa-circle-info text-cbYellow"></i> Detalhes do Produto & Ficha Técnica
+                </h3>
+                <button onclick="closeSpecModal()" class="text-white hover:text-cbYellow text-xl font-bold p-1">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div class="p-4 sm:p-6 overflow-y-auto space-y-5 flex-1 text-xs sm:text-sm text-gray-700 custom-scrollbar" id="spec-modal-content">
+                <!-- Conteúdo Injetado via JS -->
+            </div>
+
+            <div class="p-3 sm:p-4 bg-gray-50 border-t flex justify-end gap-3">
+                <button onclick="closeSpecModal()" class="px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl border border-gray-300 font-bold text-gray-600 hover:bg-gray-100 transition text-xs sm:text-sm">
+                    Fechar
+                </button>
+                <button id="modal-add-cart-btn" class="px-5 py-2 sm:px-6 sm:py-2.5 rounded-xl bg-cbYellow hover:bg-cbYellowDark text-cbBlue font-black shadow transition flex items-center gap-2 text-xs sm:text-sm">
+                    <i class="fa-solid fa-cart-plus"></i> Adicionar ao Carrinho
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Carrinho Lateral (Drawer) -->
+    <div id="cart-drawer" class="fixed inset-0 bg-black/60 z-50 hidden justify-end transition-opacity backdrop-blur-sm">
+        <div class="bg-white w-full max-w-md h-full shadow-2xl flex flex-col justify-between transform transition-transform translate-x-full duration-300" id="cart-drawer-content">
+            <div class="p-4 bg-cbBlue text-white flex justify-between items-center shadow-md">
+                <h3 class="font-black text-base sm:text-lg flex items-center gap-2"><i class="fa-solid fa-cart-shopping text-cbYellow"></i> Meu Carrinho</h3>
+                <button id="close-cart" class="text-white hover:text-cbYellow text-xl font-bold p-1"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div id="cart-items-container" class="flex-1 overflow-y-auto p-4 space-y-4 divide-y custom-scrollbar">
+                <!-- Itens entram aqui -->
+            </div>
+
+            <div class="p-4 bg-gray-50 border-t space-y-3 shadow-lg">
+                <div class="space-y-1">
+                    <div class="flex justify-between items-center text-xs text-gray-500">
+                        <span>Desconto Saldão (30%):</span>
+                        <span class="text-green-600 font-bold">Aplicado</span>
+                    </div>
+                    <div class="flex justify-between items-center text-base font-black text-gray-900">
+                        <span>Total do Pedido:</span>
+                        <span id="cart-total" class="text-cbBlue text-xl sm:text-2xl font-black">R$ 0,00</span>
+                    </div>
+                </div>
+                <button onclick="openCheckoutModal()" class="w-full bg-green-600 hover:bg-green-700 text-white font-black py-3 sm:py-3.5 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-sm sm:text-base active:scale-95">
+                    <i class="fa-solid fa-lock"></i> Finalizar Compra
+                </button>
+                <button onclick="clearCart()" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs py-2 rounded-lg font-bold transition">
+                    Esvaziar Carrinho
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Checkout & PIX -->
+    <div id="checkout-modal" class="fixed inset-0 bg-black/70 z-50 hidden items-center justify-center p-3 sm:p-4 backdrop-blur-sm">
+        <div class="bg-white w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
+            <div class="bg-cbBlue text-white px-5 py-3.5 sm:px-6 sm:py-4 flex justify-between items-center">
+                <h3 class="font-black text-sm sm:text-lg flex items-center gap-2">
+                    <i class="fa-solid fa-shield-halved text-cbYellow"></i> Checkout Seguro - Saldão Casas Bahia
+                </h3>
+                <button onclick="closeCheckoutModal()" class="text-white hover:text-cbYellow text-xl font-bold p-1">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="p-5 sm:p-6 overflow-y-auto space-y-5 flex-1 custom-scrollbar">
+                <!-- Passo 1: Formulário do Cliente -->
+                <div id="checkout-step-1" class="space-y-4">
+                    <div>
+                        <h4 class="text-xs font-black text-cbBlue uppercase tracking-wider border-b pb-2 mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-user"></i> 1. Dados Pessoais do Cliente
+                        </h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div class="sm:col-span-2">
+                                <label class="block text-xs font-bold text-gray-700 mb-1">Nome Completo *</label>
+                                <input type="text" id="buyer-name" placeholder="Ex: Maria Silva de Oliveira" class="w-full p-2.5 border border-gray-300 rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-cbBlue">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-700 mb-1">CPF (Exatos 11 dígitos) *</label>
+                                <input type="text" id="buyer-cpf" maxlength="14" placeholder="000.000.000-00" class="w-full p-2.5 border border-gray-300 rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-cbBlue font-mono">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-700 mb-1">Telefone / WhatsApp *</label>
+                                <input type="text" id="buyer-phone" placeholder="(86) 99999-0000" class="w-full p-2.5 border border-gray-300 rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-cbBlue">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="text-xs font-black text-cbBlue uppercase tracking-wider border-b pb-2 mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-truck"></i> 2. Endereço de Entrega
+                        </h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-700 mb-1">CEP *</label>
+                                <input type="text" id="buyer-cep" placeholder="64000-000" class="w-full p-2.5 border border-gray-300 rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-cbBlue">
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="block text-xs font-bold text-gray-700 mb-1">Rua / Avenida *</label>
+                                <input type="text" id="buyer-address" placeholder="Ex: Av. Frei Serafim" class="w-full p-2.5 border border-gray-300 rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-cbBlue">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-700 mb-1">Número *</label>
+                                <input type="text" id="buyer-number" placeholder="100" class="w-full p-2.5 border border-gray-300 rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-cbBlue">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-700 mb-1">Bairro *</label>
+                                <input type="text" id="buyer-neighborhood" placeholder="Centro" class="w-full p-2.5 border border-gray-300 rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-cbBlue">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-700 mb-1">Cidade / UF *</label>
+                                <input type="text" id="buyer-city" placeholder="Teresina - PI" class="w-full p-2.5 border border-gray-300 rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-cbBlue">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 border border-blue-200 rounded-xl p-3 flex items-center gap-3">
+                        <i class="fa-solid fa-qrcode text-cbBlue text-2xl"></i>
+                        <div class="text-xs">
+                            <p class="font-bold text-cbBlue">Forma de Pagamento Selecionada: PIX</p>
+                            <p class="text-gray-600">Aprovação em segundos + Desconto especial do Saldão.</p>
+                        </div>
+                    </div>
+
+                    <button onclick="processCheckoutToPix()" class="w-full bg-green-600 hover:bg-green-700 text-white font-black py-3.5 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-sm sm:text-base">
+                        Gerar QR Code Pix de Pagamento <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- Passo 2: Tela de Pagamento PIX -->
+                <div id="checkout-step-2" class="hidden space-y-5 text-center">
+                    <div class="bg-green-50 border border-green-200 p-3 rounded-xl text-green-800 text-xs font-bold flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-circle-check text-green-600 text-base"></i> Pedido registrado com sucesso! Efetue o Pix para confirmar.
+                    </div>
+
+                    <!-- Cronômetro -->
+                    <div class="bg-red-50 border border-red-200 p-2.5 rounded-xl inline-flex items-center gap-2 text-red-700 font-bold text-xs">
+                        <i class="fa-solid fa-clock animate-pulse text-base"></i>
+                        <span>Aguardando Pagamento: <span id="pix-timer" class="font-mono text-sm">15:00</span></span>
+                    </div>
+
+                    <!-- QR Code Renderizado -->
+                    <div class="flex flex-col items-center justify-center bg-gray-50 p-4 sm:p-5 rounded-2xl border-2 border-dashed border-gray-300 max-w-sm mx-auto">
+                        <p class="text-xs font-bold text-gray-500 mb-2">Escaneie o QR Code abaixo no app do seu banco:</p>
+                        <div id="qrcode-container" class="bg-white p-3 rounded-xl shadow-inner border mb-3">
+                            <!-- QR Code montado via Canvas/API -->
+                        </div>
+                        <p class="text-xs font-bold text-cbBlue" id="pix-amount-display">Valor Total: R$ 0,00</p>
+                    </div>
+
+                    <!-- Dados Bancários do Beneficiário -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-xl p-3 text-left text-xs space-y-1 max-w-md mx-auto">
+                        <p class="font-black text-cbBlue uppercase tracking-wider mb-1"><i class="fa-solid fa-building-columns"></i> Dados da Conta / Recebedor:</p>
+                        <p><span class="font-bold text-gray-700">Titular:</span> João Paulo dos Santos Carvalho</p>
+                        <p><span class="font-bold text-gray-700">Chave Pix (CNPJ):</span> <span class="font-mono">58.524.457/0001-85</span></p>
+                        <p><span class="font-bold text-gray-700">Instituição:</span> Banco Central do Brasil / BR Code EMVCo</p>
+                    </div>
+
+                    <!-- Copia e Cola -->
+                    <div class="space-y-2 max-w-md mx-auto">
+                        <label class="block text-xs font-bold text-gray-700 text-left">Código Pix Copia e Cola:</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="pix-copy-paste-input" readonly class="w-full p-2.5 bg-gray-100 border rounded-lg text-xs font-mono text-gray-600 truncate">
+                            <button onclick="copyPixPayload()" class="bg-cbBlue hover:bg-cbBlueDark text-white font-bold px-4 py-2.5 rounded-lg text-xs transition flex items-center gap-1.5 whitespace-nowrap shadow">
+                                <i class="fa-solid fa-copy"></i> Copiar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="pt-2">
+                        <button onclick="closeCheckoutModal()" class="text-xs text-gray-500 hover:text-cbBlue font-bold underline">
+                            Voltar para a loja
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast de Notificação -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-gray-900 text-white px-4 py-3 rounded-xl shadow-2xl z-50 hidden items-center gap-3 text-xs font-bold border border-gray-700 transition transform translate-y-10">
+        <i class="fa-solid fa-circle-check text-green-400 text-lg"></i>
+        <span id="toast-message">Mensagem</span>
+    </div>
+
+    <!-- JavaScript da Aplicação -->
+    <script>
+        // Catálogo de Produtos com Imagens Reais, Preços e Fichas Técnicas
+        const products = [
+            {
+                id: 1,
+                name: "Smartphone Samsung Galaxy S23 5G 128GB Tela 6.1\" Câmera Tripla 50MP",
+                category: "Smartphones",
+                originalPrice: 3899.00,
+                price: 2729.30,
+                rating: 4.9,
+                reviews: 1420,
+                image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&w=600&q=80",
+                badge: "30% OFF - SALDÃO",
+                specifications: {
+                    "Tela": "6.1 polegadas Dynamic AMOLED 2X 120Hz",
+                    "Memória Interna": "128 GB",
+                    "Memória RAM": "8 GB",
+                    "Câmera Traseira": "Tripla 50MP + 10MP + 12MP",
+                    "Bateria": "3.900 mAh com Carregamento Rápido",
+                    "Processador": "Snapdragon 8 Gen 2 for Galaxy",
+                    "Garantia": "12 meses pelo fabricante"
+                }
+            },
+            {
+                id: 2,
+                name: "Smart TV 55\" 4K UHD LED Crystal Samsung Wi-Fi Bluetooth HDR",
+                category: "TVs & Áudio",
+                originalPrice: 2999.00,
+                price: 2099.30,
+                rating: 4.8,
+                reviews: 980,
+                image: "https://images.unsplash.com/photo-1593784991095-a205069470b6?auto=format&fit=crop&w=600&q=80",
+                badge: "30% OFF - SALDÃO",
+                specifications: {
+                    "Tamanho da Tela": "55 polegadas Ultra HD 4K",
+                    "Sistema Operacional": "Tizen Smart TV",
+                    "Conectividade": "Wi-Fi, Bluetooth 5.2, 3x HDMI, 2x USB",
+                    "Áudio": "Dolby Digital Plus (20W RMS)",
+                    "Voltagem": "Bivolt",
+                    "Garantia": "12 meses"
+                }
+            },
+            {
+                id: 3,
+                name: "Geladeira Frost Free Brastemp Duplex 375L Inox com Espaço Adapt",
+                category: "Eletrodomésticos",
+                originalPrice: 3599.00,
+                price: 2519.30,
+                rating: 4.7,
+                reviews: 650,
+                image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=600&q=80",
+                badge: "30% OFF - SALDÃO",
+                specifications: {
+                    "Capacidade Total": "375 Litros (Refrigerador 288L / Freezer 87L)",
+                    "Tecnologia": "Frost Free (Não precisa degelar)",
+                    "Acabamento": "Inox com Proteção Rust Free",
+                    "Consumo de Energia": "A+++ Inverter",
+                    "Voltagem": "110V ou 220V",
+                    "Garantia": "12 meses"
+                }
+            },
+            {
+                id: 4,
+                name: "Notebook Acer Aspire 5 Intel Core i5 8GB RAM SSD 512GB Tela 15.6\" Full HD",
+                category: "Informática",
+                originalPrice: 3299.00,
+                price: 2309.30,
+                rating: 4.8,
+                reviews: 512,
+                image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=600&q=80",
+                badge: "30% OFF - SALDÃO",
+                specifications: {
+                    "Processador": "Intel Core i5 12ª Geração",
+                    "Memória RAM": "8 GB DDR4 (Expansível até 32GB)",
+                    "Armazenamento": "SSD 512 GB NVMe Ultra Rápido",
+                    "Tela": "15.6\" Full HD IPS Antirreflexo",
+                    "Sistema Operacional": "Windows 11 Home",
+                    "Garantia": "12 meses"
+                }
+            },
+            {
+                id: 5,
+                name: "Fritadeira Elétrica Air Fryer Mondial Grand Family 5.5 Litros Preta",
+                category: "Eletroportáteis",
+                originalPrice: 499.00,
+                price: 349.30,
+                rating: 4.9,
+                reviews: 2300,
+                image: "https://images.unsplash.com/photo-1585515320310-259814833e62?auto=format&fit=crop&w=600&q=80",
+                badge: "30% OFF - SALDÃO",
+                specifications: {
+                    "Capacidade": "5.5 Litros",
+                    "Potência": "1900W",
+                    "Controle de Temperatura": "Até 200°C",
+                    "Timer": "60 Minutos com desligamento automático",
+                    "Cesto": "Antiaderente removível",
+                    "Garantia": "12 meses"
+                }
+            },
+            {
+                id: 6,
+                name: "Sofá 3 Lugares Retrátil e Reclinável Camafeus Tecido Suede Cinza 2.00m",
+                category: "Móveis",
+                originalPrice: 1899.00,
+                price: 1329.30,
+                rating: 4.6,
+                reviews: 320,
+                image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=600&q=80",
+                badge: "30% OFF - SALDÃO",
+                specifications: {
+                    "Largura": "2.00 metros",
+                    "Estrutura": "Madeira de Eucalipto Tratada",
+                    "Tecido": "Suede Veludo Toque Macio",
+                    "Assento": "Preenchimento Espuma D28 com Molas Bonnel",
+                    "Encosto": "100% Fibra Siliconada Reclinável",
+                    "Garantia": "3 meses"
+                }
+            },
+            {
+                id: 7,
+                name: "Apple iPhone 14 128GB Estelar Tela 6.1\" Câmera 12MP iOS 5G",
+                category: "Smartphones",
+                originalPrice: 5199.00,
+                price: 3639.30,
+                rating: 5.0,
+                reviews: 1890,
+                image: "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?auto=format&fit=crop&w=600&q=80",
+                badge: "30% OFF - SALDÃO",
+                specifications: {
+                    "Tela": "6.1\" Super Retina XDR OLED",
+                    "Processador": "Chip A15 Bionic",
+                    "Câmeras": "Dupla 12MP (Grande-angular e Ultra-angular)",
+                    "Segurança": "Face ID para autenticação facial",
+                    "Resistência": "IP68 (Resistente à água e poeira)",
+                    "Garantia": "12 meses Apple"
+                }
+            },
+            {
+                id: 8,
+                name: "Máquina de Lavar Brastemp 13kg Branca com Ciclo Tira Manchas Advanced",
+                category: "Eletrodomésticos",
+                originalPrice: 2499.00,
+                price: 1749.30,
+                rating: 4.8,
+                reviews: 840,
+                image: "https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?auto=format&fit=crop&w=600&q=80",
+                badge: "30% OFF - SALDÃO",
+                specifications: {
+                    "Capacidade": "13 kg de roupa seca",
+                    "Programas de Lavagem": "12 programas de alta eficiência",
+                    "Filtro Antiapiapos": "Sim",
+                    "Classificação Energética": "Selo Procel A",
+                    "Voltagem": "110V ou 220V",
+                    "Garantia": "12 meses"
+                }
+            }
+        ];
+
+        // Estado do Carrinho
+        let cart = [];
+        let timerInterval = null;
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts(products);
+            setupEventListeners();
+        });
+
+        // Renderizar Grade de Produtos
+        function renderProducts(items) {
+            const grid = document.getElementById('product-grid');
+            const countLabel = document.getElementById('result-count');
+            
+            if (items.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full bg-white p-8 rounded-2xl text-center space-y-3 border">
+                        <i class="fa-solid fa-magnifying-glass text-4xl text-gray-300"></i>
+                        <p class="font-bold text-gray-600 text-sm">Nenhum produto encontrado para sua busca.</p>
+                        <button onclick="filterCategory('todos')" class="bg-cbBlue text-white font-bold text-xs px-4 py-2 rounded-lg">Ver Todos os Produtos</button>
+                    </div>
+                `;
+                countLabel.innerText = "0 produtos encontrados";
+                return;
+            }
+
+            countLabel.innerText = `Mostrando ${items.length} produto(s)`;
+
+            grid.innerHTML = items.map(p => `
+                <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-200 flex flex-col justify-between group relative">
+                    
+                    <!-- Selo Saldão -->
+                    <div class="absolute top-3 left-3 z-10 bg-cbRed text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full shadow-md flex items-center gap-1">
+                        <i class="fa-solid fa-bolt text-cbYellow"></i> ${p.badge}
+                    </div>
+
+                    <div>
+                        <!-- Imagem do Produto -->
+                        <div class="relative overflow-hidden bg-gray-50 p-4 flex items-center justify-center h-48 sm:h-56">
+                            <img src="${p.image}" alt="${p.name}" class="object-contain h-full w-full group-hover:scale-105 transition duration-500">
+                        </div>
+
+                        <!-- Detalhes do Produto -->
+                        <div class="p-4 space-y-2">
+                            <span class="text-[10px] font-extrabold uppercase text-cbBlue tracking-wider bg-blue-50 px-2 py-0.5 rounded">${p.category}</span>
+                            
+                            <!-- Avaliações Estrelas -->
+                            <div class="flex items-center gap-1 text-xs">
+                                <div class="text-cbYellow">
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star-half-stroke"></i>
+                                </div>
+                                <span class="font-bold text-gray-700 text-[11px]">${p.rating}</span>
+                                <span class="text-gray-400 text-[10px]">(${p.reviews})</span>
+                            </div>
+
+                            <h3 class="font-bold text-xs sm:text-sm text-gray-800 line-clamp-2 hover:text-cbBlue cursor-pointer transition" onclick="openSpecModal(${p.id})">
+                                ${p.name}
+                            </h3>
+
+                            <button onclick="openSpecModal(${p.id})" class="text-[11px] text-cbBlue font-bold hover:underline flex items-center gap-1">
+                                <i class="fa-solid fa-list-check"></i> Ver Ficha Técnica
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Preços e Botão de Compra -->
+                    <div class="p-4 pt-0 border-t border-gray-100 mt-2 space-y-3">
+                        <div class="pt-2">
+                            <p class="text-xs text-gray-400 line-through">De: R$ ${p.originalPrice.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</p>
+                            <p class="text-lg sm:text-xl font-black text-cbBlue leading-tight">
+                                Por: R$ ${p.price.toLocaleString('pt-BR', {minimumFractionDigits: 2})}
+                            </p>
+                            <p class="text-[10px] text-green-600 font-bold">10x de R$ ${(p.price / 10).toLocaleString('pt-BR', {minimumFractionDigits: 2})} sem juros</p>
+                        </div>
+
+                        <button onclick="addToCart(${p.id})" class="w-full bg-cbYellow hover:bg-cbYellowDark text-cbBlue font-black py-2.5 rounded-xl shadow transition flex items-center justify-center gap-2 text-xs sm:text-sm transform active:scale-95">
+                            <i class="fa-solid fa-cart-plus"></i> Adicionar
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Event Listeners
+        function setupEventListeners() {
+            // Filtro por busca
+            document.getElementById('search-input').addEventListener('input', (e) => {
+                const term = e.target.value.toLowerCase();
+                const filtered = products.filter(p => p.name.toLowerCase().includes(term) || p.category.toLowerCase().includes(term));
+                renderProducts(filtered);
+            });
+
+            // Carrinho Drawer
+            document.getElementById('cart-btn').addEventListener('click', openCartDrawer);
+            document.getElementById('close-cart').addEventListener('click', closeCartDrawer);
+
+            // Menu Mobile
+            document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+                document.getElementById('mobile-menu').classList.remove('hidden');
+            });
+            document.getElementById('close-mobile-menu').addEventListener('click', () => {
+                document.getElementById('mobile-menu').classList.add('hidden');
+            });
+
+            // Formatação do CPF (Estrito 11 dígitos)
+            const cpfInput = document.getElementById('buyer-cpf');
+            cpfInput.addEventListener('input', (e) => {
+                let v = e.target.value.replace(/\D/g, '');
+                if (v.length > 11) v = v.slice(0, 11);
+                
+                v = v.replace(/(\d{3})(\d)/, '$1.$2');
+                v = v.replace(/(\d{3})(\d)/, '$1.$2');
+                v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+                e.target.value = v;
+            });
+        }
+
+        // Filtrar por Categoria
+        function filterCategory(cat) {
+            document.getElementById('mobile-menu').classList.add('hidden');
+            if (cat === 'todos') {
+                renderProducts(products);
+            } else {
+                const filtered = products.filter(p => p.category === cat);
+                renderProducts(filtered);
+            }
+            showToast(`Filtrado por: ${cat}`);
+        }
+
+        function handleCategorySelect(val) {
+            filterCategory(val);
+        }
+
+        // Modal Ficha Técnica
+        function openSpecModal(productId) {
+            const p = products.find(item => item.id === productId);
+            if (!p) return;
+
+            const modal = document.getElementById('spec-modal');
+            const container = document.getElementById('spec-modal-content');
+
+            let specsHtml = Object.entries(p.specifications).map(([key, val]) => `
+                <tr class="border-b">
+                    <td class="py-2 px-3 font-bold bg-gray-50 text-gray-600 w-1/3">${key}</td>
+                    <td class="py-2 px-3 text-gray-800">${val}</td>
+                </tr>
+            `).join('');
+
+            container.innerHTML = `
+                <div class="flex flex-col md:flex-row gap-6 items-center">
+                    <img src="${p.image}" class="h-48 object-contain rounded-xl bg-gray-50 p-2 border">
+                    <div class="space-y-2 text-left">
+                        <span class="bg-cbRed text-white text-[10px] font-black px-2 py-0.5 rounded">${p.badge}</span>
+                        <h4 class="font-black text-base sm:text-lg text-gray-900">${p.name}</h4>
+                        <p class="text-xl font-black text-cbBlue">R$ ${p.price.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</p>
+                        <p class="text-xs text-green-600 font-bold">Em estoque com envio imediato para todo o Brasil!</p>
+                    </div>
+                </div>
+
+                <div>
+                    <h5 class="font-black text-xs uppercase tracking-wider text-cbBlue border-b pb-1 mb-2">Ficha Técnica Completa</h5>
+                    <table class="w-full text-xs text-left border rounded-lg overflow-hidden">
+                        <tbody>${specsHtml}</tbody>
+                    </table>
+                </div>
+            `;
+
+            document.getElementById('modal-add-cart-btn').onclick = () => {
+                addToCart(p.id);
+                closeSpecModal();
+            };
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeSpecModal() {
+            const modal = document.getElementById('spec-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Lógica do Carrinho
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existing = cart.find(item => item.id === productId);
+
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+
+            updateCartUI();
+            showToast(`"${product.name.slice(0, 25)}..." adicionado ao carrinho!`);
+        }
+
+        function updateCartQuantity(id, delta) {
+            const item = cart.find(i => i.id === id);
+            if (item) {
+                item.quantity += delta;
+                if (item.quantity <= 0) {
+                    cart = cart.filter(i => i.id !== id);
+                }
+            }
+            updateCartUI();
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(i => i.id !== id);
+            updateCartUI();
+        }
+
+        function clearCart() {
+            cart = [];
+            updateCartUI();
+            showToast("Carrinho esvaziado.");
+        }
+
+        function updateCartUI() {
+            const counter = document.getElementById('cart-counter');
+            const totalLabel = document.getElementById('cart-total');
+            const container = document.getElementById('cart-items-container');
+
+            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            counter.innerText = totalCount;
+            totalLabel.innerText = `R$ ${totalPrice.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 space-y-3">
+                        <i class="fa-solid fa-cart-arrow-down text-4xl text-gray-300"></i>
+                        <p class="text-xs text-gray-500 font-bold">Seu carrinho está vazio no momento.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = cart.map(item => `
+                <div class="flex items-center justify-between py-3 gap-3">
+                    <img src="${item.image}" class="w-12 h-12 object-contain bg-gray-50 rounded border p-1">
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-xs font-bold text-gray-800 truncate">${item.name}</h4>
+                        <p class="text-xs font-black text-cbBlue">R$ ${item.price.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</p>
+                        <div class="flex items-center gap-2 mt-1">
+                            <button onclick="updateCartQuantity(${item.id}, -1)" class="w-5 h-5 bg-gray-200 rounded text-xs font-bold hover:bg-gray-300">-</button>
+                            <span class="text-xs font-bold">${item.quantity}</span>
+                            <button onclick="updateCartQuantity(${item.id}, 1)" class="w-5 h-5 bg-gray-200 rounded text-xs font-bold hover:bg-gray-300">+</button>
+                        </div>
+                    </div>
+                    <button onclick="removeFromCart(${item.id})" class="text-red-500 hover:text-red-700 text-xs font-bold p-1">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function openCartDrawer() {
+            const drawer = document.getElementById('cart-drawer');
+            const content = document.getElementById('cart-drawer-content');
+            drawer.classList.remove('hidden');
+            drawer.classList.add('flex');
+            setTimeout(() => {
+                content.classList.remove('translate-x-full');
+            }, 10);
+        }
+
+        function closeCartDrawer() {
+            const drawer = document.getElementById('cart-drawer');
+            const content = document.getElementById('cart-drawer-content');
+            content.classList.add('translate-x-full');
+            setTimeout(() => {
+                drawer.classList.add('hidden');
+                drawer.classList.remove('flex');
+            }, 300);
+        }
+
+        // Flow de Checkout
+        function openCheckoutModal() {
+            if (cart.length === 0) {
+                showToast("Adicione produtos ao carrinho antes de finalizar a compra!");
+                return;
+            }
+            closeCartDrawer();
+
+            document.getElementById('checkout-step-1').classList.remove('hidden');
+            document.getElementById('checkout-step-2').classList.add('hidden');
+
+            const modal = document.getElementById('checkout-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeCheckoutModal() {
+            const modal = document.getElementById('checkout-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            if (timerInterval) clearInterval(timerInterval);
+        }
+
+        // Validação e Gerador Oficial EMVCo Pix BR Code
+        function processCheckoutToPix() {
+            const name = document.getElementById('buyer-name').value.trim();
+            const cpf = document.getElementById('buyer-cpf').value.replace(/\D/g, '');
+            const phone = document.getElementById('buyer-phone').value.trim();
+
+            if (!name) {
+                alert("Por favor, preencha seu nome completo.");
+                return;
+            }
+            if (cpf.length !== 11) {
+                alert("Por favor, informe um CPF válido com exatamente 11 números.");
+                return;
+            }
+            if (!phone) {
+                alert("Por favor, preencha seu telefone/WhatsApp.");
+                return;
+            }
+
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            // Dados da Chave Pix CNPJ
+            const pixKey = "58524457000185"; 
+            const merchantName = "JOAO PAULO DOS SANTOS CARVALHO";
+            const merchantCity = "TERESINA";
+
+            // Montar BR Code Payload
+            const payload = generateBRCodePayload(pixKey, merchantName, merchantCity, totalPrice);
+
+            // Atualizar UI da Tela Pix
+            document.getElementById('pix-amount-display').innerText = `Valor Total: R$ ${totalPrice.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+            document.getElementById('pix-copy-paste-input').value = payload;
+
+            // Renderizar QR Code via API pública confiável
+            const qrContainer = document.getElementById('qrcode-container');
+            qrContainer.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(payload)}" alt="QR Code Pix" class="w-48 h-48 rounded-lg shadow">`;
+
+            // Trocar de Passo no Modal
+            document.getElementById('checkout-step-1').classList.add('hidden');
+            document.getElementById('checkout-step-2').classList.remove('hidden');
+
+            startPixTimer();
+        }
+
+        // Algoritmo Oficial EMVCo BR Code + CRC16 Checksum
+        function generateBRCodePayload(key, name, city, amount) {
+            const formattedAmount = amount.toFixed(2);
+            
+            function formatField(id, value) {
+                const len = value.length.toString().padStart(2, '0');
+                return `${id}${len}${value}`;
+            }
+
+            const merchantAccount = formatField('00', 'br.gov.bcb.pix') + formatField('01', key);
+            
+            let payload = '000201' +
+                          formatField('26', merchantAccount) +
+                          '52040000' +
+                          '5303986' +
+                          formatField('54', formattedAmount) +
+                          '5802BR' +
+                          formatField('59', name.slice(0, 25)) +
+                          formatField('60', city.slice(0, 15)) +
+                          '62070503***';
+
+            payload += '6304';
+            payload += crc16(payload);
+
+            return payload;
+        }
+
+        // Função de cálculo CRC16-CCITT
+        function crc16(str) {
+            let crc = 0xFFFF;
+            for (let i = 0; i < str.length; i++) {
+                crc ^= str.charCodeAt(i) << 8;
+                for (let j = 0; j < 8; j++) {
+                    if ((crc & 0x8000) !== 0) {
+                        crc = ((crc << 1) ^ 0x1021) & 0xFFFF;
+                    } else {
+                        crc = (crc << 1) & 0xFFFF;
+                    }
+                }
+            }
+            return crc.toString(16).toUpperCase().padStart(4, '0');
+        }
+
+        // Cronômetro do Pix
+        function startPixTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            let duration = 15 * 60;
+            const display = document.getElementById('pix-timer');
+
+            timerInterval = setInterval(() => {
+                const minutes = Math.floor(duration / 60).toString().padStart(2, '0');
+                const seconds = (duration % 60).toString().padStart(2, '0');
+                display.innerText = `${minutes}:${seconds}`;
+
+                if (--duration < 0) {
+                    clearInterval(timerInterval);
+                    display.innerText = "EXPIRADO";
+                    alert("O tempo para pagamento expirou. Gere um novo pedido.");
+                    closeCheckoutModal();
+                }
+            }, 1000);
+        }
+
+        function copyPixPayload() {
+            const input = document.getElementById('pix-copy-paste-input');
+            input.select();
+            document.execCommand('copy');
+            showToast("Código Pix Copia e Cola copiado com sucesso!");
+        }
+
+        function simulateCepModal() {
+            const cep = prompt("Digite seu CEP para calcular o frete:", "64000-000");
+            if (cep) {
+                document.getElementById('header-cep-label').innerText = `CEP: ${cep} (Frete Grátis)`;
+                showToast(`CEP ${cep} aplicado com sucesso!`);
+            }
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').innerText = msg;
+            toast.classList.remove('hidden');
+            toast.classList.add('flex');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+                toast.classList.remove('flex');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
